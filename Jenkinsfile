@@ -33,7 +33,18 @@ pipeline {
 
     }
 //----------------------------------------------------
+stage('Docker Build and Push') {
+      steps {
+        withCredentials([string(credentialsId: 'docker-hub-password', variable: 'DOCKER_HUB_PASSWORD')]) {
+          sh 'sudo docker login -u mahmak -p $DOCKER_HUB_PASSWORD'
+          sh 'printenv'
+          sh 'sudo docker build -t mahmak/devops-app:""$GIT_COMMIT"" .'
+          sh 'sudo docker push mahmak/devops-app:""$GIT_COMMIT""'
+        }
 
+      }
+    }
+//--------------------------
 
 	}
 }
